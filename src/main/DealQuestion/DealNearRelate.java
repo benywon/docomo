@@ -180,14 +180,16 @@ public class DealNearRelate {
         double maxdist=Double.MAX_VALUE;
         for(DianPingResult.BNdetail bNdetail:dianPingResult.bNdetails)
         {
-            float[] result=new float[2];
-            result[0]=bNdetail.longitude;
-            result[1]=bNdetail.latitude;
-            double distance=BaseMethod.getdistance(customer,result);
-            if(distance<maxdist)
+            if(_iscateok(bNdetail))
             {
-                maxdist=distance;
-                dd=bNdetail;
+                float[] result = new float[2];
+                result[0] = bNdetail.longitude;
+                result[1] = bNdetail.latitude;
+                double distance = BaseMethod.getdistance(customer, result);
+                if (distance < maxdist) {
+                    maxdist = distance;
+                    dd = bNdetail;
+                }
             }
         }
         dianPingResult.bNdetails.clear();
@@ -210,11 +212,14 @@ public class DealNearRelate {
 
         for(DianPingResult.BNdetail bNdetail:dianPingResult.bNdetails)
         {
-            float[] result=new float[2];
-            result[0]=bNdetail.longitude;
-            result[1]=bNdetail.latitude;
-            double distance=BaseMethod.getdistance(customer,result);
-            map.put(bNdetail,distance);
+            if(_iscateok(bNdetail))
+            {
+                float[] result = new float[2];
+                result[0] = bNdetail.longitude;
+                result[1] = bNdetail.latitude;
+                double distance = BaseMethod.getdistance(customer, result);
+                map.put(bNdetail, distance);
+            }
         }
         dianPingResult.bNdetails.clear();
         map=BaseMethod.sortByValue(map,true);
@@ -240,7 +245,7 @@ public class DealNearRelate {
     {
         String txt="";
         String  keyword=this.QUESTION.substring(this.QUESTION.lastIndexOf(NearPatternString)+NearPatternString.length());
-        keyword=keyword.replaceAll("的","");
+        keyword=keyword.replaceAll("的", "");
         List<String> cat=new ArrayList<>();
         for(String keycategory:Initiation.ValidCategory)
         {
@@ -261,4 +266,23 @@ public class DealNearRelate {
         return  keyword;
     }
 
+    /**
+     * 判断某个bussiness是不是有效的类型
+     * @param bNdetail
+     * @return
+     */
+    private boolean _iscateok(DianPingResult.BNdetail bNdetail)
+    {
+        for(String incategory:bNdetail.categories)
+        {
+            for(String validcat:this.Category)
+            {
+                if(validcat.contains(incategory))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
