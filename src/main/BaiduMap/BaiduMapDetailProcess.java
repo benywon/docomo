@@ -17,8 +17,15 @@ public class BaiduMapDetailProcess {
 
     public List<String> uids=new ArrayList<>();
     public String uid;
+    public float lat;
+    public float lng;
+    public float radius=10000;
+    public String location;
 
-
+    public void setLocation(float lat,float lng)
+    {
+        this.location+=lat+","+lng;
+    }
     public List<BaiduMapDetail> detailList=new ArrayList<>();
 
     public String getdetail()
@@ -33,6 +40,8 @@ public class BaiduMapDetailProcess {
         url+=uidstr.replaceAll(",$","");
         url+="&";
         url+="ak="+BaiduMap.Baiduak+"&";
+        url+="location="+this.location+"&";
+        url+="radius="+this.radius+"&";
         url+="scope=2";
         try {
             content= Crawlerbases.spiderhtml(url, "utf-8");
@@ -57,6 +66,9 @@ public class BaiduMapDetailProcess {
         BaiduMapDetailProcess baiduMapDetailProcess =new BaiduMapDetailProcess();
         baiduMapDetailProcess.uids.add("45ef9a2b5508cbfda2d230e6");
         baiduMapDetailProcess.uids.add("8c3adf1c6f135ad74d554726");
+        baiduMapDetailProcess.uids.add("03d7e5971f3675483c9a5e9e");
+        baiduMapDetailProcess.uids.add("06881d62cb48756c7069d3f4");
+        baiduMapDetailProcess.setLocation(39.889512f,116.419143f);
         String content= baiduMapDetailProcess.getdetail();
         baiduMapDetailProcess.dealwiththiscontent(content);
         Filebases.Write2File(content, Myconfig.Getconfiginfo("tempxmlfile"), false);

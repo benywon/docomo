@@ -209,7 +209,7 @@ public class BaiduMapRequest {
     public static void main(String[] args) {
         BaiduMapRequest baiduMapRequest=new BaiduMapRequest();
         baiduMapRequest.setLocation(116.404f, 39.915f);
-        baiduMapRequest.setQuery("公园");
+        baiduMapRequest.setQuery("景区");
         baiduMapRequest.setScope(2);
         baiduMapRequest.setPage_size(19);
         String contrny=baiduMapRequest.dorequest();

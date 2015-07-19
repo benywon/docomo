@@ -33,6 +33,10 @@ public class BaiduMapDetail {
     public	String		comment_num	;//	评论数
     public	String		favorite_num	;//	收藏数
     public	String		checkin_num	;//	签到数
+    public	String		alias	;//	别称
+    public	String		scope_grade	;//	等级
+    public	String		scope_type	;//	等级
+    public	String		description	;//	介绍
 
     public BaiduMapDetail(String name, Float lat, Float lng, String address, String telephone, String uid, Integer distance, String type, String tag, String detail_url, String price, String shop_hours, String overall_rating, String taste_rating, String service_rating, String environment_rating, String facility_rating, String hygiene_rating, String technology_rating, String image_num, Integer groupon_num, Integer discount_num, String comment_num, String favorite_num, String checkin_num) {
         this.name = name;
@@ -60,6 +64,9 @@ public class BaiduMapDetail {
         this.comment_num = comment_num;
         this.favorite_num = favorite_num;
         this.checkin_num = checkin_num;
+    }
+
+    public BaiduMapDetail() {
     }
 
     /**
