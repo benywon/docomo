@@ -36,7 +36,7 @@ public class DianPingApiRelate {
     public void getregions()
     {
         Map<String, String> param = new HashMap<>();
-        param.put("format", "json");
+        param.put("format", "xml");
         param.put("city", "北京");
         String txt = SDianPing.get_dianping_data(param, regions_with_businesses_apiurl);
         Filebases.Write2File(txt, Myconfig.Getconfiginfo("beijingregionsxmlfile"), false);
@@ -89,6 +89,6 @@ public class DianPingApiRelate {
     }
     public static void main(String[] args) {
         DianPingApiRelate dianPingApiRelate =new DianPingApiRelate();
-        dianPingApiRelate.getcategory();
+        dianPingApiRelate.getregions();
     }
 }

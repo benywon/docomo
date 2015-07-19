@@ -91,4 +91,23 @@ public class BaseMethod {
         distance=Math.sqrt(distance);
         return distance;
     }
+
+    /**
+     * 这个字符串是否包含有某个列表中的东西
+     * @param list
+     * @param string
+     * @return
+     */
+    public static List<String> doListContainsString(List<String> list,String string)
+    {
+        List<String> listout=new ArrayList<>();
+        for(String liststr:list)
+        {
+            if(string.contains(liststr))
+            {
+                listout.add(liststr);
+            }
+        }
+        return listout;
+    }
 }

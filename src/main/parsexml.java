@@ -73,7 +73,7 @@ public class parsexml {
             map=BaseMethod.sortByValue(map,false);
             System.out.println();
             Set<String> set=new HashSet<>(list);
-            Filebases.WriteList2File(new ArrayList<>(set),"L:\\program\\cip\\DOCOMO\\parsequestion\\category.xml");
+            Filebases.WriteList2File(new ArrayList<>(set), "L:\\program\\cip\\DOCOMO\\parsequestion\\category.xml");
             System.out.println("结束");
         }
         return true;
@@ -152,6 +152,30 @@ public class parsexml {
             System.out.println("结束");
         }
         return true;
+    }
+
+    /**
+     * 从一个文档里获得指定属性名称的属性值
+     * <city name="北京">
+     * @param filepath
+     * @param attr
+     * @return
+     */
+    public static List<String> GetValueByAttr(String filepath,String attr)
+    {
+        List<String> list=new ArrayList<>();
+        String content=Filebases.readfile(filepath);
+        org.jsoup.nodes.Document doc = Jsoup.parse(content);//
+        Elements elements=doc.getElementsByAttribute(attr);
+        for(Element attrele:elements)
+        {
+            String txt=attrele.attr(attr);
+            if(txt.length()>0)
+            {
+                list.add(txt);
+            }
+        }
+        return list;
     }
     public static void main(String[] args)
     {

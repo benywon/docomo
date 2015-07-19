@@ -24,10 +24,14 @@ public class DealNearRelate {
     public List<String> Category=Initiation.ValidCategory;
     public DianPingSearch dianPingSearch = new DianPingSearch();
     public String QUESTION;
+    public String tranferkeywords="";
+
+    private static int innumber=0;
 
     public DealNearRelate(DianPingSearch dianPingSearch, String QUESTION) {
         this.dianPingSearch = dianPingSearch;
         this.QUESTION = QUESTION;
+        innumber=0;
     }
 
 
@@ -35,6 +39,7 @@ public class DealNearRelate {
     {
         //首先我们需要将问句处理一下 把离我最近的一类的东西拿掉
         DianPingResult dianPingResult = new DianPingResult();
+        dianPingSearch.setkeywords(getkeyword());
         switch (NearPattern) {
             case 1: {
                 dianPingResult = getnearst();
@@ -51,12 +56,16 @@ public class DealNearRelate {
 
     private DianPingResult getnearby()
     {
-        dianPingSearch.setkeywords(getkeyword());
+        innumber++;
         DianPingResult dd=new DianPingResult();
+        if(innumber>=3)
+        {
+            dd = _dorecursivefindnearby();
+            return dd;
+        }
         if(NearStrategy==0) {
             String txt= dianPingSearch.dopost();
             if (ResultDeal.getcount(txt) > 0) {
-
                 DianPingResult dianPing = new DianPingResult();
                 dd.dealxml(txt);
                 boolean isvalid = false;
@@ -81,18 +90,18 @@ public class DealNearRelate {
                 if (isvalid) {
                     dd.bNdetails = dianPing.bNdetails;
                     return dd;
-                } else//说明用以前的信息没有在找到最近的 需要进一步处理 也就是关键词的处理
+                } else //说明用以前的信息没有在找到最近的 需要进一步处理 也就是关键词的处理
                 {
-
+                    dianPingSearch.setkeywords(this.tranferkeywords);
+                    return getnearst();
                 }
-                System.out.println("chengg ");
-
             } else//说明方圆5000米没有公园或者其他东西 需要在处理
             //处理方法就是还是以这个为圆心 但是找的关键词就没有了 但是还是以距离优先 然后看返回的
 //        然后我们看返回结果 从每个结果里面还是这样的找 直到找到一个
             {
 
-                dd = _dorecursivefindnearby();
+                dianPingSearch.setkeywords(this.tranferkeywords);
+                return getnearst();
 
             }
         }
@@ -112,13 +121,16 @@ public class DealNearRelate {
         /*
         离我最近的公园 我们需要将离我最近的拿掉 将公园放进去
          */
-        dianPingSearch.setkeywords(getkeyword());
+        innumber++;
         DianPingResult dd=new DianPingResult();
+        if(innumber>=3)
+        {
+            dd = _dorecursivefindnearby();
+            return dd;
+        }
         if(NearStrategy==0) {
             String txt = dianPingSearch.dopost();
             if (ResultDeal.getcount(txt) > 0) {
-
-
                 dd.dealxml(txt);
                 boolean isvalid = false;
                 for (DianPingResult.BNdetail bNdetail : dd.bNdetails) {
@@ -143,17 +155,17 @@ public class DealNearRelate {
                     return dd;
                 } else//说明用以前的信息没有在找到最近的 需要进一步处理 也就是关键词的处理
                 {
-
+                    dianPingSearch.setkeywords(this.tranferkeywords);
+                    return getnearst();
                 }
-                System.out.println("chengg ");
 
             } else//说明方圆5000米没有公园或者其他东西 需要在处理
             //处理方法就是还是以这个为圆心 但是找的关键词就没有了 但是还是以距离优先 然后看返回的
 //        然后我们看返回结果 从每个结果里面还是这样的找 直到找到一个
             {
 
-                dd = _dorecursivefind();
-
+                dianPingSearch.setkeywords(this.tranferkeywords);
+                return getnearst();
             }
         }
         else
@@ -198,6 +210,7 @@ public class DealNearRelate {
     }
     /**
      * 没有找到我们只能从我们的知识库找了 这个是更广范围的
+     * 但是我们只有一个约束信息那就是标签
      * @return
      */
     private DianPingResult _dorecursivefindnearby()
@@ -243,25 +256,42 @@ public class DealNearRelate {
      */
     private String getkeyword()
     {
-        String txt="";
-        String  keyword=this.QUESTION.substring(this.QUESTION.lastIndexOf(NearPatternString)+NearPatternString.length());
-        keyword=keyword.replaceAll("的", "");
+
+//        String  keyword=this.QUESTION.substring(this.QUESTION.lastIndexOf(NearPatternString)+NearPatternString.length());
+//
+//        keyword=keyword.replaceAll("的", "");
+        String  keyword="";
         List<String> cat=new ArrayList<>();
         for(String keycategory:Initiation.ValidCategory)
         {
             String[] contents=keycategory.split("/");
             for(String content:contents)
             {
-                if(keyword.contains(content))
+                if(this.QUESTION.contains(content))
                 {
+                    this.tranferkeywords+=content+" ";
                     cat.add(keycategory);
                 }
             }
         }
-        if(cat.size()>0)
+        keyword+=this.tranferkeywords;
+        //找到了有关的区域
+        List<String> list=BaseMethod.doListContainsString(Initiation.RegionCategory,this.QUESTION);
+        if(list.size()>0)
+        {
+            for(String region:list)
+            {
+                keyword+=region+" ";
+            }
+        }
+        if(cat.size()>0)//那29个类别里面是否有一个
         {
             this.Category=new ArrayList<>();
             this.Category.addAll(cat);
+        }
+        else
+        {
+            //添加错误处理内容
         }
         return  keyword;
     }

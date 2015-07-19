@@ -54,6 +54,10 @@ public class DealQuestion{
             DealNearRelate dealNearRelate=new DealNearRelate(this.dianPingSearch,this.Question);
             this.dianPingResult=dealNearRelate.dealnearst();
         }
+        else //没有最近 附近一类的 东西 可能就是我们需要找一个区域的东西
+        {
+
+        }
     }
 
 
@@ -76,7 +80,6 @@ public class DealQuestion{
             }
         }
     }
-
     public static void main(String[] args) {
         DianPingSearch dianPingSearch=new DianPingSearch();
         dianPingSearch.latitude=39.9025f;
@@ -85,7 +88,7 @@ public class DealQuestion{
         dianPingSearch.sort=7;
         dianPingSearch.format="xml";
         DealQuestion dealQuestion=new DealQuestion(dianPingSearch);
-        dealQuestion.dealthisquesion("附近的名胜古迹景点");
+        dealQuestion.dealthisquesion("东城区离我最近的名胜古迹有什么");
         System.out.println("成功");
     }
 }
