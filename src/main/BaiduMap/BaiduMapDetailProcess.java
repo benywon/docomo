@@ -1,8 +1,6 @@
 package main.BaiduMap;
 
 import main.Crawlerbases;
-import main.Filebases;
-import main.Myconfig;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -62,16 +60,5 @@ public class BaiduMapDetailProcess {
             this.detailList.add(baiduMapDetail);
         }
     }
-    public static void main(String[] args) {
-        BaiduMapDetailProcess baiduMapDetailProcess =new BaiduMapDetailProcess();
-        baiduMapDetailProcess.uids.add("45ef9a2b5508cbfda2d230e6");
-        baiduMapDetailProcess.uids.add("8c3adf1c6f135ad74d554726");
-        baiduMapDetailProcess.uids.add("03d7e5971f3675483c9a5e9e");
-        baiduMapDetailProcess.uids.add("06881d62cb48756c7069d3f4");
-        baiduMapDetailProcess.setLocation(39.889512f,116.419143f);
-        String content= baiduMapDetailProcess.getdetail();
-        baiduMapDetailProcess.dealwiththiscontent(content);
-        Filebases.Write2File(content, Myconfig.Getconfiginfo("tempxmlfile"), false);
-        System.out.println(content);
-    }
+
 }

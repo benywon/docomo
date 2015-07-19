@@ -209,10 +209,12 @@ public class BaiduMapRequest {
     public static void main(String[] args) {
         BaiduMapRequest baiduMapRequest=new BaiduMapRequest();
         baiduMapRequest.setLocation(116.404f, 39.915f);
-        baiduMapRequest.setQuery("景区");
+        baiduMapRequest.setQuery("公园");
         baiduMapRequest.setScope(2);
         baiduMapRequest.setPage_size(19);
         String contrny=baiduMapRequest.dorequest();
+        BaiduMapResult baiduMapResult=new BaiduMapResult();
+        BaiduMapDetailProcess baiduMapDetailProcess=baiduMapResult.getresult(contrny);
         Filebases.Write2File(contrny, Myconfig.Getconfiginfo("tempxmlfile"),false);
         System.out.println(contrny);
     }
