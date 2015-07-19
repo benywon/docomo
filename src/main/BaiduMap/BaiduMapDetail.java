@@ -38,7 +38,8 @@ public class BaiduMapDetail {
     public	String		scope_type	;//	等级
     public	String		description	;//	介绍
 
-    public BaiduMapDetail(String name, Float lat, Float lng, String address, String telephone, String uid, Integer distance, String type, String tag, String detail_url, String price, String shop_hours, String overall_rating, String taste_rating, String service_rating, String environment_rating, String facility_rating, String hygiene_rating, String technology_rating, String image_num, Integer groupon_num, Integer discount_num, String comment_num, String favorite_num, String checkin_num) {
+    public BaiduMapDetail(String price, String name, Float lat, Float lng, String address, String telephone, String uid, Integer distance, String type, String tag, String detail_url, String shop_hours, String overall_rating, String taste_rating, String service_rating, String environment_rating, String facility_rating, String hygiene_rating, String technology_rating, String image_num, Integer groupon_num, Integer discount_num, String comment_num, String favorite_num, String checkin_num, String alias, String scope_grade, String scope_type, String description) {
+        this.price = price;
         this.name = name;
         this.lat = lat;
         this.lng = lng;
@@ -49,7 +50,6 @@ public class BaiduMapDetail {
         this.type = type;
         this.tag = tag;
         this.detail_url = detail_url;
-        this.price = price;
         this.shop_hours = shop_hours;
         this.overall_rating = overall_rating;
         this.taste_rating = taste_rating;
@@ -64,6 +64,10 @@ public class BaiduMapDetail {
         this.comment_num = comment_num;
         this.favorite_num = favorite_num;
         this.checkin_num = checkin_num;
+        this.alias = alias;
+        this.scope_grade = scope_grade;
+        this.scope_type = scope_type;
+        this.description = description;
     }
 
     public BaiduMapDetail() {

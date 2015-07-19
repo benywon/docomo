@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by benywon on 2015/7/18.
  */
 public class DealNearRelate {
-    public static int NearStrategy=Integer.parseInt(Myconfig.Getconfiginfo("NearStrategy"));
+    public static int NearStrategy=Integer.parseInt(Myconfig.Getconfiginfo("DZDPNearStrategy"));
     public static int NearPattern = 0;
     public static String NearPatternString;
     public List<String> Category=Initiation.ValidCategory;

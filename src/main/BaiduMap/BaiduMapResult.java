@@ -17,6 +17,17 @@ public class BaiduMapResult {
     {
         BaiduMapDetailProcess baiduMapDetailProcess=new BaiduMapDetailProcess();
         org.jsoup.nodes.Document doc = Jsoup.parse(content);//
+
+        Element totalcountele=doc.getElementsByTag("total").first();
+        if(totalcountele==null)
+        {
+            return baiduMapDetailProcess;
+        }
+        baiduMapDetailProcess.totalcount=Integer.parseInt(totalcountele.text());
+        if(baiduMapDetailProcess.totalcount<1)
+        {
+            return baiduMapDetailProcess;
+        }
         Elements elements=doc.getElementsByTag("result");
         for(Element element:elements)
         {
@@ -27,6 +38,13 @@ public class BaiduMapResult {
             {
                 int number = Integer.parseInt(numtxt.text());
                 this.distanceMap.put(txt, number);
+            }
+            if(baiduMapDetailProcess.uids.size()==10)
+            {
+                String detail=baiduMapDetailProcess.getdetail();
+                baiduMapDetailProcess.dealwiththiscontent(detail);
+                baiduMapDetailProcess=_addDistance(baiduMapDetailProcess);
+                baiduMapDetailProcess.uids.clear();
             }
         }
         String detail=baiduMapDetailProcess.getdetail();

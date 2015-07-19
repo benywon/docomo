@@ -1,5 +1,6 @@
 package main.DealQuestion;
 
+import main.BaiduMap.BaiduMapRequest;
 import main.DZDPquery.DianPingResult;
 import main.DZDPquery.DianPingSearch;
 import main.Myconfig;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 public class DealQuestion{
 
+    public static int baiduORdzdp=Integer.parseInt(Myconfig.Getconfiginfo("baiduORdzdp"));
     public String Question;
     public boolean IsNeetCoordinate=false;
     private DianPingSearch dianPingSearch=new DianPingSearch();
@@ -49,14 +51,26 @@ public class DealQuestion{
     private void deal()
     {
         _isneedcoordinate();
-        if(this.IsNeetCoordinate)
+        if(baiduORdzdp==0)//说明是用百度的map
         {
-            DealNearRelate dealNearRelate=new DealNearRelate(this.dianPingSearch,this.Question);
-            this.dianPingResult=dealNearRelate.dealnearst();
-        }
-        else //没有最近 附近一类的 东西 可能就是我们需要找一个区域的东西
-        {
+            if (this.IsNeetCoordinate) {
+                DealNearRelate dealNearRelate = new DealNearRelate(this.dianPingSearch, this.Question);
+                this.dianPingResult = dealNearRelate.dealnearst();
+            } else //没有最近 附近一类的 东西 可能就是我们需要找一个区域的东西
+            {
 
+            }
+        }
+        else//用百度的东西
+        {
+            if(this.IsNeetCoordinate)
+            {
+                BaiduMapRequest baiduMapRequest=new BaiduMapRequest();
+                baiduMapRequest.setLocation(this.dianPingSearch.longitude, this.dianPingSearch.latitude);
+                baiduMapRequest.setQuery(this.Question);
+
+
+            }
         }
     }
 

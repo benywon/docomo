@@ -3,6 +3,8 @@ package main.BaiduMap;
 import main.Crawlerbases;
 import main.Filebases;
 import main.Myconfig;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -58,9 +60,16 @@ public class BaiduMapRequest {
     周边检索半径，单位为米
      */
     public Map<String,String> ParaMap=new HashMap<>();
+
+    public void setRegion(String region) {
+        this.location="";
+        this.radius=null;
+        this.region = region;
+    }
+
     /*
-    我们提交参数用的map
-     */
+        我们提交参数用的map
+         */
     public String region;
     /*
     北京、131、全国
@@ -81,40 +90,79 @@ public class BaiduMapRequest {
 
     service_rating：服务
      */
-
+    public Integer sort_rule=0;
+    /*
+    排序规则
+    取值如下：0：从高到低，1：从低到高；
+     */
+    public int max_num=3;
     //-------------------------------------------------------------------------------//
     //-----------------------------------------------------------------------------------------//
+
+    public void setMax_num(int max_num) {
+        this.max_num = max_num;
+    }
+
     /**
      * 由一个属性得到结果
      * @return
      */
     public String dorequest()
     {
-        this.setParaMap();
-        String content="";
-        String url=BaiduMap.positionapi;
-        for(Map.Entry<String,String> entryobj:this.ParaMap.entrySet())
-        {
-            String key=entryobj.getKey();
-            String value=entryobj.getValue();
-            url+=key+"="+value+"&";
-        }
-        url=url.replaceAll("&$","");
-        try {
-            content= Crawlerbases.spiderhtml(url,"utf-8");
-            return content;
-        } catch (Exception e) {
-            e.printStackTrace();
+        String content = "";
+        while(true) {
+            this.setParaMap();
+            String url = BaiduMap.positionapi;
+            for (Map.Entry<String, String> entryobj : this.ParaMap.entrySet()) {
+                String key = entryobj.getKey();
+                String value = entryobj.getValue();
+                url += key + "=" + value + "&";
+            }
+            url = url.replaceAll("&$", "");
+            try {
+                String  content_single = Crawlerbases.spiderhtml(url, "utf-8");
+                if(_getcountnumber(content_single))
+                {
+                    content+=content_single;
+                    this.page_num++;
+                    if(this.page_num>=this.max_num)//最多60个
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
         return content;
     }
+    private boolean _getcountnumber(String content)
+    {
+        org.jsoup.nodes.Document doc = Jsoup.parse(content);//
 
+        Element totalcountele=doc.getElementsByTag("total").first();
+
+        int totalcount=Integer.parseInt(totalcountele.text());
+        if(totalcount<1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
     /**
      * 下面就是一系列操作方法
      * @param filter
      */
     public void setFilter(String filter) {
-        this.filter = filter;
+        this.filter = "industry_type:"+filter;
     }
 
     public void setQuery(String query) {
@@ -145,6 +193,8 @@ public class BaiduMapRequest {
         this.ak = ak;
     }
     public void setLocation(float jingdu,float weidu) {
+        this.region="";
+        this.radius=50000;
         String loc=weidu+","+jingdu;
         this.location = loc;
     }
@@ -206,12 +256,29 @@ public class BaiduMapRequest {
         return true;
     }
 
+    /**
+     * 设置排序是从低到高
+     */
+    public void setsortaccent()
+    {
+        this.sort_rule=1;
+    }
+
+    /**
+     * 从高到低
+     */
+    public void setsortdescent()
+    {
+        this.sort_rule=0;
+    }
     public static void main(String[] args) {
         BaiduMapRequest baiduMapRequest=new BaiduMapRequest();
         baiduMapRequest.setLocation(116.404f, 39.915f);
-        baiduMapRequest.setQuery("公园");
+        baiduMapRequest.setQuery("东城区离我最近的名胜古迹有什么");
         baiduMapRequest.setScope(2);
-        baiduMapRequest.setPage_size(19);
+        baiduMapRequest.setPage_size(20);
+        baiduMapRequest.setSort_nameBydistance();
+        baiduMapRequest.setsortaccent();
         String contrny=baiduMapRequest.dorequest();
         BaiduMapResult baiduMapResult=new BaiduMapResult();
         BaiduMapDetailProcess baiduMapDetailProcess=baiduMapResult.getresult(contrny);

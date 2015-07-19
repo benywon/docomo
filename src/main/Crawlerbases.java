@@ -161,7 +161,7 @@ public class Crawlerbases {
 
     public static URLConnection SetConnecProp(URLConnection url_con)
     {
-        int sec_cont = 2;
+        int sec_cont = 5;
         url_con.setDoOutput(true);
         url_con.setReadTimeout(1000 * sec_cont);
         int random1=(int)(1+Math.random()*(566));

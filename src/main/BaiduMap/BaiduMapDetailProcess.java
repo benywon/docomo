@@ -14,16 +14,7 @@ import java.util.List;
 public class BaiduMapDetailProcess {
 
     public List<String> uids=new ArrayList<>();
-    public String uid;
-    public float lat;
-    public float lng;
-    public float radius=10000;
-    public String location;
-
-    public void setLocation(float lat,float lng)
-    {
-        this.location+=lat+","+lng;
-    }
+    public int totalcount=0;
     public List<BaiduMapDetail> detailList=new ArrayList<>();
 
     public String getdetail()
@@ -38,8 +29,6 @@ public class BaiduMapDetailProcess {
         url+=uidstr.replaceAll(",$","");
         url+="&";
         url+="ak="+BaiduMap.Baiduak+"&";
-        url+="location="+this.location+"&";
-        url+="radius="+this.radius+"&";
         url+="scope=2";
         try {
             content= Crawlerbases.spiderhtml(url, "utf-8");
