@@ -15,8 +15,8 @@ public class BaiduMap {
     public static void main(String[] args) throws Exception {
 //        String url=apiurl.replaceAll("经度","116.403963").replaceAll("纬度","39.915119");
 //        String url=suggestapi.replaceAll("天安门", "望京");
-       BaiduMap baiduMap=new BaiduMap();
-        baiduMap.getPosition("公园");
+          BaiduMap baiduMap=new BaiduMap();
+          baiduMap.getPosition("公园");
     }
     public String getPosition(String query) throws Exception {
         String url=positionapi.replaceAll("问句",query).replaceAll("经度","116.403963").replaceAll("纬度", "39.915119");

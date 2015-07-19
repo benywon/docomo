@@ -43,6 +43,23 @@ public class BaiduSearch {
         }
 
     }
+    public BaiduMapDetailProcess dothiswithoutlocation(BaiduMapRequest baiduMapRequest)
+    {
+        this.QUESTION=baiduMapRequest.query;
+        baiduMapRequest.setQuery(getkeyword());
+        baiduMapRequest.setMax_num(Initiation.NearByCount / baiduMapRequest.page_size + 1);
+        baiduMapRequest.setSort_nameBydefault();
+        baiduMapRequest.setsortdescent();
+        String contrny=baiduMapRequest.dorequest();
+        BaiduMapResult baiduMapResult=new BaiduMapResult();
+        BaiduMapDetailProcess baiduMapDetailProcess=baiduMapResult.getresult(contrny);
+        BaiduMapDetail baiduMapDetail=getthenearst(baiduMapDetailProcess);
+        baiduMapDetailProcess.detailList.clear();
+        baiduMapDetailProcess.detailList.add(baiduMapDetail);
+        return baiduMapDetailProcess;
+
+
+    }
     private BaiduMapDetail getthenearst(BaiduMapDetailProcess baiduMapDetailProcess)
     {
         BaiduMapDetail baiduMapDetail=new BaiduMapDetail();
@@ -78,20 +95,28 @@ public class BaiduSearch {
             {
                 if(this.QUESTION.contains(content))
                 {
-                    this.tranferkeywords+=content+" ";
+                    this.tranferkeywords+=content+",";
                     cat.add(keycategory);
                 }
             }
         }
+        this.tranferkeywords=this.tranferkeywords.replaceAll(",$","");
         keyword+=this.tranferkeywords;
         //找到了有关的区域
         List<String> list= BaseMethod.doListContainsString(Initiation.RegionCategory, this.QUESTION);
         if(list.size()>0)
         {
+            int max=-1;
+            String temp="";
             for(String region:list)
             {
-                keyword+=region+" ";
+                if(region.length()>max)
+                {
+                    max=region.length();
+                    temp=region;
+                }
             }
+            keyword+=","+temp;
         }
         return  keyword;
     }

@@ -1,6 +1,8 @@
 package main.DealQuestion;
 
+import main.BaiduMap.BaiduMapDetailProcess;
 import main.BaiduMap.BaiduMapRequest;
+import main.BaiduMap.BaiduSearch;
 import main.DZDPquery.DianPingResult;
 import main.DZDPquery.DianPingSearch;
 import main.Myconfig;
@@ -51,30 +53,35 @@ public class DealQuestion{
     private void deal()
     {
         _isneedcoordinate();
-        if(baiduORdzdp==0)//说明是用百度的map
+        if(baiduORdzdp==0)//说明是用大众点评的map
         {
+
             if (this.IsNeetCoordinate) {
                 DealNearRelate dealNearRelate = new DealNearRelate(this.dianPingSearch, this.Question);
                 this.dianPingResult = dealNearRelate.dealnearst();
             } else //没有最近 附近一类的 东西 可能就是我们需要找一个区域的东西
             {
-
+                DealRegion dealRegion = new DealRegion(this.dianPingSearch, this.Question);
+                this.dianPingResult = dealRegion.dealDZDPregion();
             }
         }
         else//用百度的东西
         {
+            BaiduMapRequest baiduMapRequest=new BaiduMapRequest();
+            baiduMapRequest.setLocation(this.dianPingSearch.longitude, this.dianPingSearch.latitude);
+            baiduMapRequest.setQuery(this.Question);
+            BaiduSearch baiduSearch=new BaiduSearch();
             if(this.IsNeetCoordinate)
             {
-                BaiduMapRequest baiduMapRequest=new BaiduMapRequest();
-                baiduMapRequest.setLocation(this.dianPingSearch.longitude, this.dianPingSearch.latitude);
-                baiduMapRequest.setQuery(this.Question);
-
-
+                BaiduMapDetailProcess baiduMapDetailProcess=baiduSearch.dothiswithlocation(baiduMapRequest);
+                System.out.println("发给你");
+            }
+            else//找区域 海淀区的什么什么
+            {
+                BaiduMapDetailProcess baiduMapDetailProcess=baiduSearch.dothiswithoutlocation(baiduMapRequest);
             }
         }
     }
-
-
 
     private void _isneedcoordinate()
     {
@@ -102,7 +109,7 @@ public class DealQuestion{
         dianPingSearch.sort=7;
         dianPingSearch.format="xml";
         DealQuestion dealQuestion=new DealQuestion(dianPingSearch);
-        dealQuestion.dealthisquesion("东城区离我最近的名胜古迹有什么");
+        dealQuestion.dealthisquesion("海淀区的名胜古迹有什么");
         System.out.println("成功");
     }
 }
