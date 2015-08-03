@@ -43,22 +43,49 @@ public class BaiduSearch {
         }
 
     }
-    public BaiduMapDetailProcess dothiswithoutlocation(BaiduMapRequest baiduMapRequest)
-    {
-        this.QUESTION=baiduMapRequest.query;
+    public BaiduMapDetailProcess dothiswithoutlocation(BaiduMapRequest baiduMapRequest) {
+        this.QUESTION = baiduMapRequest.query;
         baiduMapRequest.setQuery(getkeyword());
-        baiduMapRequest.setMax_num(Initiation.NearByCount / baiduMapRequest.page_size + 1);
+        baiduMapRequest.setMax_num(this.max_num_cat(baiduMapRequest.page_size));
+        baiduMapRequest.setSort_nameBydefault();
+        baiduMapRequest.setsortdescent();
+        String contrny = baiduMapRequest.dorequest();
+        BaiduMapResult baiduMapResult = new BaiduMapResult();
+        BaiduMapDetailProcess baiduMapDetailProcess = baiduMapResult.getresult(contrny);
+        BaiduMapDetail baiduMapDetail = getthenearst(baiduMapDetailProcess);
+        baiduMapDetailProcess.detailList.clear();
+        baiduMapDetailProcess.detailList.add(baiduMapDetail);
+        return baiduMapDetailProcess;
+    }
+        /**
+         * 仅仅只搜寻一个的程序
+         * getresultonly1
+          */
+    public BaiduMapDetailProcess doonlyone(BaiduMapRequest baiduMapRequest)
+    {
+        baiduMapRequest.setMax_num(this.max_num_cat(baiduMapRequest.page_size));
         baiduMapRequest.setSort_nameBydefault();
         baiduMapRequest.setsortdescent();
         String contrny=baiduMapRequest.dorequest();
         BaiduMapResult baiduMapResult=new BaiduMapResult();
-        BaiduMapDetailProcess baiduMapDetailProcess=baiduMapResult.getresult(contrny);
-        BaiduMapDetail baiduMapDetail=getthenearst(baiduMapDetailProcess);
-        baiduMapDetailProcess.detailList.clear();
-        baiduMapDetailProcess.detailList.add(baiduMapDetail);
+        BaiduMapDetailProcess baiduMapDetailProcess=baiduMapResult.getresultonly1(contrny);
         return baiduMapDetailProcess;
-
-
+    }
+    /**
+     *计算应该弄几页
+     * @param page_size
+     * @return
+     */
+    private int max_num_cat(int page_size)
+    {
+        if(Initiation.NearByCount%page_size!=0)
+        {
+            return Initiation.NearByCount / page_size + 1;
+        }
+        else
+        {
+            return Initiation.NearByCount / page_size;
+        }
     }
     private BaiduMapDetail getthenearst(BaiduMapDetailProcess baiduMapDetailProcess)
     {

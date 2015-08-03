@@ -44,7 +44,15 @@ public class DealQuestion{
     public void dealthisquesion(String question)
     {
         this.Question=question;
-        deal();
+        QueryAnalysis queryAnalysis=new QueryAnalysis(question);
+        if(QueryAnalysis.querytype==2)
+        {
+            deal();
+        }
+        else if(QueryAnalysis.querytype==1)//问客观属性
+        {
+
+        }
     }
     public void dealthisquesion()
     {
@@ -53,6 +61,7 @@ public class DealQuestion{
     private void deal()
     {
         _isneedcoordinate();
+
         if(baiduORdzdp==0)//说明是用大众点评的map
         {
 
@@ -83,6 +92,9 @@ public class DealQuestion{
         }
     }
 
+    /**
+     * 是否是我们的第一类问题的距离问题 也就是附近啊 还有最近的什么 海淀区的什么
+     */
     private void _isneedcoordinate()
     {
         List<String> list= Myconfig.GetconfiginfoList("nearpatter");
@@ -109,7 +121,7 @@ public class DealQuestion{
         dianPingSearch.sort=7;
         dianPingSearch.format="xml";
         DealQuestion dealQuestion=new DealQuestion(dianPingSearch);
-        dealQuestion.dealthisquesion("海淀区的名胜古迹有什么");
+        dealQuestion.dealthisquesion("离我最近的公园");
         System.out.println("成功");
     }
 }

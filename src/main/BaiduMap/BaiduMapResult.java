@@ -52,7 +52,28 @@ public class BaiduMapResult {
         baiduMapDetailProcess=_addDistance(baiduMapDetailProcess);
         return baiduMapDetailProcess;
     }
+    public BaiduMapDetailProcess getresultonly1(String content)
+    {
+        BaiduMapDetailProcess baiduMapDetailProcess=new BaiduMapDetailProcess();
+        org.jsoup.nodes.Document doc = Jsoup.parse(content);//
 
+        Element totalcountele=doc.getElementsByTag("total").first();
+        if(totalcountele==null)
+        {
+            return baiduMapDetailProcess;
+        }
+        baiduMapDetailProcess.totalcount=Integer.parseInt(totalcountele.text());
+        if(baiduMapDetailProcess.totalcount<1)
+        {
+            return baiduMapDetailProcess;
+        }
+        Element element=doc.getElementsByTag("result").first();
+        String txt=element.getElementsByTag("uid").first().text();
+        baiduMapDetailProcess.uids.add(txt);
+        String detail=baiduMapDetailProcess.getdetail();
+        baiduMapDetailProcess.dealwiththiscontent(detail);
+        return baiduMapDetailProcess;
+    }
     private BaiduMapDetailProcess _addDistance(BaiduMapDetailProcess baiduMapDetailProcess)
     {
         for(BaiduMapDetail baiduMapDetail:baiduMapDetailProcess.detailList)

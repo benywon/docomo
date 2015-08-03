@@ -1,5 +1,7 @@
 package main;
 
+import main.DZDPquery.DianPingXY;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,8 +14,11 @@ public class Initiation {
     public static List<String> ValidCategory=new ArrayList<>();
     public static List<String> RegionCategory=new ArrayList<>();
     public static Set<Integer> ValidCIds= new HashSet<>();
+    public static Set<String> allSpotNames = new HashSet<>();
+    public static DianPingXY dianPingXY=new DianPingXY();
     public static int NearByCount=-1;
     static {
+        allSpotNames=Filebases.GetSetFromFile(Myconfig.Getconfiginfo("allSpotNameFile"));
         ValidCategory=Filebases.GetListFromFile(Myconfig.Getconfiginfo("validcategoryfile"));
         RegionCategory=parsexml.GetValueByAttr(Myconfig.Getconfiginfo("beijingregionsxmlfile"), "name");
         List<String> temp=new ArrayList<>(RegionCategory);

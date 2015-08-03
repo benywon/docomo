@@ -1,9 +1,7 @@
 package main;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by benywon on 2015/4/7.
@@ -124,6 +122,23 @@ public class Filebases {
         return allright;
     }
     /**
+     * 将一个列表写入文件
+     * @param list
+     * @param filepath
+     * @return
+     */
+    public static boolean WriteList2File(Set list,String filepath)
+    {
+        String txt="";
+        for(Object strobj:list)
+        {
+            String str=strobj.toString();
+            txt+=str+"\r\n";
+        }
+        boolean allright=Write2File(txt,filepath,false);
+        return allright;
+    }
+    /**
      * 将一个对象写入文件
      * @param map
      * @param filepath
@@ -142,6 +157,12 @@ public class Filebases {
         }
 
     }
+
+    /**
+     * 从一个文件中得到列表
+     * @param filepath
+     * @return
+     */
     public static List GetListFromFile(String filepath)
     {
         List<String> list=new ArrayList<>();
@@ -149,5 +170,13 @@ public class Filebases {
         String[] li=txt.split("\r\n");
         list= Arrays.asList(li);
         return list;
+    }
+    public static Set GetSetFromFile(String filepath)
+    {
+        List<String> list=new ArrayList<>();
+        String txt=readfile(filepath);
+        String[] li=txt.split("\r\n");
+        list= Arrays.asList(li);
+        return new HashSet<>(list);
     }
 }

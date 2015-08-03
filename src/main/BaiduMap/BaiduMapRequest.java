@@ -54,7 +54,7 @@ public class BaiduMapRequest {
     lat<纬度>,lng<经度>
     周边检索中心点，不支持多个点
      */
-    public Integer radius=50000;//搜索半径是50公里
+    public Integer radius=20000;//搜索半径是20公里
     /*
     2000
     周边检索半径，单位为米
@@ -95,7 +95,7 @@ public class BaiduMapRequest {
     排序规则
     取值如下：0：从高到低，1：从低到高；
      */
-    public int max_num=3;
+    public int max_num=500;
     //-------------------------------------------------------------------------------//
     //-----------------------------------------------------------------------------------------//
 
@@ -255,7 +255,6 @@ public class BaiduMapRequest {
         }
         return true;
     }
-
     /**
      * 设置排序是从低到高
      */
@@ -263,7 +262,6 @@ public class BaiduMapRequest {
     {
         this.sort_rule=1;
     }
-
     /**
      * 从高到低
      */
@@ -274,9 +272,11 @@ public class BaiduMapRequest {
     public static void main(String[] args) {
         BaiduMapRequest baiduMapRequest=new BaiduMapRequest();
         baiduMapRequest.setLocation(116.404f, 39.915f);
-        baiduMapRequest.setQuery("东城区离我最近的名胜古迹有什么");
+        baiduMapRequest.setRadius(30000);
+        baiduMapRequest.setQuery("景点");
         baiduMapRequest.setScope(2);
         baiduMapRequest.setPage_size(20);
+        baiduMapRequest.setTag("旅游");
         baiduMapRequest.setSort_nameBydistance();
         baiduMapRequest.setsortaccent();
         String contrny=baiduMapRequest.dorequest();
