@@ -19,6 +19,41 @@ public class Initiation {
     public static int NearByCount=-1;
     static {
         allSpotNames=Filebases.GetSetFromFile(Myconfig.Getconfiginfo("allSpotNameFile"));
+        Set<String> set=new HashSet<>();
+        for(DianPingXY.Shop shop:dianPingXY.shops)
+        {
+            String name=shop.basicinfo.name;
+            if(name.contains("3D错觉"))
+            {
+                System.out.println(name);
+            }
+            if(name.length()>1)
+            {
+                if(name.contains("·")||name.contains("(")||name.contains("+")||name.contains("-"))
+                {
+                    String[] cc=name.split("\\(|·|\\+|-");
+                    int max=-1;
+                    String temp="";
+                    for(String c:cc)
+                    {
+                        if(c.length()>max)
+                        {
+                            temp=c;
+                        }
+                    }
+                    set.add(temp);
+                }
+                else
+                {
+                    set.add(name);
+                }
+            }
+        }
+        allSpotNames.addAll(set);
+        allSpotNames.remove("\r\n");
+        allSpotNames.remove("\r");
+        allSpotNames.remove("\n");
+        allSpotNames.remove("");
         ValidCategory=Filebases.GetListFromFile(Myconfig.Getconfiginfo("validcategoryfile"));
         RegionCategory=parsexml.GetValueByAttr(Myconfig.Getconfiginfo("beijingregionsxmlfile"), "name");
         List<String> temp=new ArrayList<>(RegionCategory);
@@ -43,6 +78,8 @@ public class Initiation {
         NearByCount = Integer.parseInt(Myconfig.Getconfiginfo("NearByCount"));
     }
 
-    public Initiation() {
+    public Initiation()
+    {
+
     }
 }

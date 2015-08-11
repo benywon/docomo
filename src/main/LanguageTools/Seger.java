@@ -1,6 +1,8 @@
 package main.LanguageTools;
 
+import main.DealQuestion.QuestionFileRelate;
 import main.Myconfig;
+import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
@@ -8,6 +10,7 @@ import org.ansj.splitWord.analysis.ToAnalysis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by benywon on 2015/8/11.
@@ -51,6 +54,60 @@ public class Seger {
         }
         String[] result = listwords.toArray(new String[listwords.size()]);
         return  result;
+    }
+    public static List<Term> SegWordsReturnTerm(String words)
+    {
+        List<Term> list = new ArrayList<>();
+        if (SegModel == 1) {
+            list = BaseAnalysis.parse(words);
+        } else if (SegModel == 2)
+        {
+            list = ToAnalysis.parse(words);
+        }
+        else if(SegModel==3)
+        {
+            list = NlpAnalysis.parse(words);
+        }
+        else
+        {
+            list = NlpAnalysis.parse(words);
+        }
+
+        return  list;
+    }
+
+
+    public static void main(String[] args) {
+        String c="王府井近的游乐场有哪些?";
+        List<Term> list=SegWordsReturnTerm(c);
+        System.out.println(list);
+        QuestionFileRelate questionFileRelate=new QuestionFileRelate();
+        for(Map.Entry<String, String> entry: QuestionFileRelate.QuestionAnswerPairType1.entrySet())
+        {
+            c=entry.getKey();
+            list=SegWordsReturnTerm(c);
+            String tt="";
+            String ts="";
+            boolean isadd=false;
+            for(Term term:list)
+            {
+                Nature nature=term.natrue();
+                if(nature.natureStr.startsWith("n")||nature.natureStr.contains("userDefine"))
+                {
+                    isadd=true;
+                    tt+=term.getName();
+                    ts+=nature.natureStr;
+                }
+                else if(isadd)
+                {
+                    break;
+                }
+            }
+            if(tt.length()>1) {
+                System.out.println(tt+"\t"+ts);
+            }
+        }
+
     }
 }
     //    public static void main(String[] args) throws IOException {

@@ -11,5 +11,13 @@
     <orderEntry type="library" name="jdom-2.0.6" level="project" />
     <orderEntry type="library" name="json-lib-2.4-jdk15" level="project" />
     <orderEntry type="library" name="commons-codec-1.4" level="project" />
+    <orderEntry type="library" name="mmseg4j-analysis-1.9.1" level="project" />
+    <orderEntry type="library" name="lucene-core-4.10.2" level="project" />
+    <orderEntry type="library" name="IKAnalyzer3.1.1Stable" level="project" />
+    <orderEntry type="library" name="ansj_seg-2.0.8" level="project" />
+    <orderEntry type="library" name="nlp-lang-1.0" level="project" />
+    <orderEntry type="library" name="stanford-corenlp-3.5.2" level="project" />
+    <orderEntry type="library" name="stanford-corenlp-3.5.2-models" level="project" />
+    <orderEntry type="library" name="stanford-parser" level="project" />
   </component>
 </module>

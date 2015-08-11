@@ -5,7 +5,6 @@ import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 import edu.stanford.nlp.trees.*;
 import main.Myconfig;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -65,17 +64,17 @@ public class Parser {
     }
 
     public static void main(String[] args) {
-        Tree parse1=Parser.getParseTree("有没有3D错觉艺术馆的联系电话");
-        parse1.pennPrint();
-        List<Tree> leaves = parse1.getLeaves();
-        Iterator<Tree> it = leaves.iterator();
-        while (it.hasNext()) {
-            Tree leaf = it.next();
-            String qq=leaf.nodeString();
-            Tree start = leaf;
-            start = start.parent(parse1);
-            String tag = start.value().toString().trim();
-            System.out.println(qq+tag);
+
+        printparsetree("夏季奥林匹克森林公园的开放时间是什么时候？");
+//        List<Tree> leaves = parse1.getLeaves();
+//        Iterator<Tree> it = leaves.iterator();
+//        while (it.hasNext()) {
+//            Tree leaf = it.next();
+//            String qq=leaf.nodeString();
+//            Tree start = leaf;
+//            start = start.parent(parse1);
+//            String tag = start.value().toString().trim();
+//            System.out.println(qq+tag);
         }
     }
-}
+

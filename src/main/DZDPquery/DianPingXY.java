@@ -44,6 +44,7 @@ public class DianPingXY implements Serializable {
     {
 //        getdianpingfromxmlfile();
         this.shops= (List<Shop>) Filebases.ReadObj(Myconfig.Getconfiginfo("dianpingXYobjfilepath"));
+
     }
 
     /**
@@ -123,14 +124,64 @@ public class DianPingXY implements Serializable {
      */
     public DianPingXY.Shop getshopbyname(String name)
     {
+        List<DianPingXY.Shop> shops=new ArrayList<>();
         for(DianPingXY.Shop shop:this.shops)
         {
-            if(shop.basicinfo.name!=null) {
-                if (shop.basicinfo.name.equals(name)) {
-                    return shop;
+            if(shop.basicinfo.name!=null&&shop.basicinfo.name.length()>0) {
+                if (shop.basicinfo.name.contains(name))
+                {
+                    shops.add(shop);
                 }
             }
         }
-        return null;
+        int min=10001;
+        DianPingXY.Shop tempshop=null;
+        for(DianPingXY.Shop shop:shops)
+        {
+            String thisname=shop.basicinfo.name;
+            if(thisname.replaceAll(name,"").length()<min)
+            {
+                min=thisname.replaceAll(name,"").length();
+                tempshop=shop;
+            }
+        }
+        return tempshop;
+    }
+
+    /**
+     * 是为了清除大众点评中数据有的是有附加的 如北京3D错觉艺术馆+体感游戏节
+     * @param name1
+     * @param name2
+     * @return
+     */
+    private boolean _getaddwords(String name1,String name2)
+    {
+        if(name2.contains("·")||name2.contains("(")||name2.contains("-"))
+        {
+            String[] cc=name2.split("·|(|-)");
+            for(String c:cc)
+            {
+                if(name1.contains(c))
+                {
+                    return true;
+                }
+                else if(name1.contains((c.replaceAll("北京",""))))
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }else{
+            if(name1.contains(name2))
+            {
+                return true;
+            }
+            else if(name1.contains((name2.replaceAll("北京",""))))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -8,11 +8,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 将问题的文件转化为我们的map 最后直接进行处理的函数
  * Created by benywon on 2015/8/10.
  */
 public class QuestionFileRelate {
-    public static Map<String,String> QuestionAnswerPair=new HashMap<>();
-    public void tranferquestionfile()
+    public static Map<String,String> QuestionAnswerPairType1=new HashMap<>();
+
+    public QuestionFileRelate() {
+        this._tranferquestionfile();
+    }
+
+    private void _tranferquestionfile()
     {
         String originalfilename= Myconfig.Getconfiginfo("QuestionFileType1");
         List<String> list= Filebases.GetListFromFile(originalfilename);
@@ -27,15 +33,9 @@ public class QuestionFileRelate {
             for (int i = 0; i <len ; i+=2)
             {
                 String answer=strings[i+1].replaceAll("答：","");
-                QuestionAnswerPair.put(strings[i],answer);
+                QuestionAnswerPairType1.put(strings[i],answer);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        QuestionFileRelate questionFileRelate=new QuestionFileRelate();
-        questionFileRelate.tranferquestionfile();
-        System.out.println("hfdio");
     }
 
 }

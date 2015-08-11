@@ -84,7 +84,10 @@ public class SDianPing {
 
     public static void main(String[] args) {
         SDianPing sDianPing=new SDianPing();
-        sDianPing.getresult("天安门");
+        String tt=sDianPing.getresult("南锣鼓巷");
+        DianPingResult dd=new DianPingResult();
+        dd.dealxml(tt);
+        System.out.println("result");
 
     }
 }

@@ -8,6 +8,7 @@ import main.DZDPquery.DianPingSearch;
 import main.Myconfig;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by benywon on 2015/7/18.
@@ -51,7 +52,9 @@ public class DealQuestion{
         }
         else if(QueryAnalysis.querytype==1)//问客观属性
         {
-
+            ImpersonalQuestion impersonalQuestion=new ImpersonalQuestion();
+            String answer=impersonalQuestion.deal(question);
+            System.out.println(answer);
         }
     }
     public void dealthisquesion()
@@ -64,14 +67,25 @@ public class DealQuestion{
 
         if(baiduORdzdp==0)//说明是用大众点评的map
         {
-
             if (this.IsNeetCoordinate) {
                 DealNearRelate dealNearRelate = new DealNearRelate(this.dianPingSearch, this.Question);
                 this.dianPingResult = dealNearRelate.dealnearst();
+                int answernumber=this.dianPingResult.bNdetails.size();
+                for (int i = 0; i <answernumber ; i++)
+                {
+                    String answers=this.dianPingResult.bNdetails.get(i).name;
+                    System.out.println(answers);
+                }
             } else //没有最近 附近一类的 东西 可能就是我们需要找一个区域的东西
             {
                 DealRegion dealRegion = new DealRegion(this.dianPingSearch, this.Question);
                 this.dianPingResult = dealRegion.dealDZDPregion();
+                int answernumber=this.dianPingResult.bNdetails.size();
+                for (int i = 0; i <answernumber ; i++)
+                {
+                    String answers=this.dianPingResult.bNdetails.get(i).name;
+                    System.out.println(answers);
+                }
             }
         }
         else//用百度的东西
@@ -83,11 +97,22 @@ public class DealQuestion{
             if(this.IsNeetCoordinate)
             {
                 BaiduMapDetailProcess baiduMapDetailProcess=baiduSearch.dothiswithlocation(baiduMapRequest);
-                System.out.println("发给你");
+                int answernumber=baiduMapDetailProcess.detailList.size();
+                for (int i = 0; i <answernumber ; i++)
+                {
+                    String answers=baiduMapDetailProcess.detailList.get(i).name;
+                    System.out.println(answers);
+                }
             }
             else//找区域 海淀区的什么什么
             {
                 BaiduMapDetailProcess baiduMapDetailProcess=baiduSearch.dothiswithoutlocation(baiduMapRequest);
+                int answernumber=baiduMapDetailProcess.detailList.size();
+                for (int i = 0; i <answernumber ; i++)
+                {
+                    String answers=baiduMapDetailProcess.detailList.get(i).name;
+                    System.out.println(answers);
+                }
             }
         }
     }
@@ -121,7 +146,18 @@ public class DealQuestion{
         dianPingSearch.sort=7;
         dianPingSearch.format="xml";
         DealQuestion dealQuestion=new DealQuestion(dianPingSearch);
-        dealQuestion.dealthisquesion("离我最近的公园");
+        QuestionFileRelate questionFileRelate=new QuestionFileRelate();
+        for(Map.Entry<String, String> entry:QuestionFileRelate.QuestionAnswerPairType1.entrySet())
+        {
+            String question=entry.getKey();
+            System.out.println("-------------问题---------------------");
+            System.out.println(question);
+            System.out.println("--------------我们的答案--------------------");
+            dealQuestion.dealthisquesion(question);
+            System.out.println("----------------正确答案------------------");
+            System.out.println(entry.getValue());
+        }
+
         System.out.println("成功");
     }
 }

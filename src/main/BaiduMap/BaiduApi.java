@@ -14,12 +14,16 @@ import java.util.Set;
  */
 public class BaiduApi {
     public Set<String> positionname=new HashSet<>();
+
+    /**
+     * 得到百度地图所有娱乐场所名称的api
+     */
   public void getallname()
   {
       this.positionname= Filebases.GetSetFromFile(Myconfig.Getconfiginfo("allSpotNameFile"));
       BaiduMapRequest baiduMapRequest=new BaiduMapRequest();
       baiduMapRequest.setTag("");
-      baiduMapRequest.setQuery("游乐场");
+      baiduMapRequest.setQuery("旅游景点");
       baiduMapRequest.setRegion("北京");
       baiduMapRequest.setMax_num(5000);
       baiduMapRequest.setScope(1);
@@ -31,15 +35,46 @@ public class BaiduApi {
       for(Element name:names)
       {
           String txt=name.text();
-          if(!txt.equals(""))
+          if(txt.length()>1)
           {
-              this.positionname.add(name.text());
+              if(txt.contains("(")||txt.contains("（"))
+              {
+                  String[] cc=txt.split("\\(|（");
+                  this.positionname.add(cc[0]);
+              }
+              else {
+                  this.positionname.add(txt);
+              }
           }
       }
       Filebases.WriteList2File(this.positionname, Myconfig.Getconfiginfo("allSpotNameFile"));
       System.out.println("后is都会");
   }
-
+    public void getalltag()
+    {
+//        this.positionname= Filebases.GetSetFromFile(Myconfig.Getconfiginfo("BaiduallSpotTagFile"));
+        BaiduMapRequest baiduMapRequest=new BaiduMapRequest();
+        baiduMapRequest.setTag("");
+        baiduMapRequest.setQuery("美术馆");
+        baiduMapRequest.setRegion("北京");
+        baiduMapRequest.setMax_num(5000);
+        baiduMapRequest.setScope(2);
+        baiduMapRequest.setSort_nameBydefault();
+        baiduMapRequest.setsortdescent();
+        String content=baiduMapRequest.dorequest();
+        org.jsoup.nodes.Document doc = Jsoup.parse(content);//
+        Elements names=doc.getElementsByTag("tag");
+        for(Element name:names)
+        {
+            String txt=name.text();
+            if(!txt.equals(""))
+            {
+                this.positionname.add(name.text());
+            }
+        }
+        Filebases.WriteList2File(this.positionname, Myconfig.Getconfiginfo("BaiduallSpotTagFile"));
+        System.out.println("后is都会");
+    }
     public static void main(String[] args) {
         BaiduApi baiduApi=new BaiduApi();
         baiduApi.getallname();

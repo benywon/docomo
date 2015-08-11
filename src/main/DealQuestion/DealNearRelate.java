@@ -209,6 +209,7 @@ public class DealNearRelate {
         return dianPingResult;
     }
     /**
+     * 从知识库里面找到我们需要的数据
      * 没有找到我们只能从我们的知识库找了 这个是更广范围的
      * 但是我们只有一个约束信息那就是标签
      * @return
@@ -216,7 +217,6 @@ public class DealNearRelate {
     private DianPingResult _dorecursivefindnearby()
     {
         Map<DianPingResult.BNdetail,Double> map=new HashMap<>();
-        DianPingApiRelate dianPingApiRelate=new DianPingApiRelate();
         float[] customer=new float[2];
         customer[0]=dianPingSearch.longitude;
         customer[1]=dianPingSearch.latitude;
